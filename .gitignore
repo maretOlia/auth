@@ -1,9 +1,7 @@
 ### Intellij ###
-*.iml
 .idea/
 
 ### Gradle ###
-.gradle
 build/
 
 
