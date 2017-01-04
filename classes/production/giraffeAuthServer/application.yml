@@ -1,0 +1,11 @@
+server:
+ port: 8081
+# contextPath: /spring-security-oauth-server
+
+logging:
+ level:
+   org:
+    springframework:
+     web: DEBUG
+
+     security: DEBUG
