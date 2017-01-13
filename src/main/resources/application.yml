@@ -1,11 +1,12 @@
 server:
  port: 8081
-# contextPath: /spring-security-oauth-server
+ contextPath: /auth
+ error:
+  whitelabel:
+   enabled: false
 
 logging:
  level:
    org:
     springframework:
-     web: DEBUG
-
      security: DEBUG

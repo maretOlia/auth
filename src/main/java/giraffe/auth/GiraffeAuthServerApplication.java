@@ -10,7 +10,9 @@ public class GiraffeAuthServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GiraffeAuthServerApplication.class, args);
+
 	}
+
 }
 
 

@@ -4,6 +4,7 @@ import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -23,7 +24,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/console/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/home").access("#oauth2.hasScope('read') and #oauth2.hasScope('write') and hasRole('USER')")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -31,7 +34,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     ServletRegistrationBean h2servletRegistration() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
-        registrationBean.addUrlMappings("/console"); //default db url: "jdbc:h2:mem:testdb"
+        registrationBean.addUrlMappings("/console/*"); //default db url: "jdbc:h2:mem:testdb"
         return registrationBean;
     }
 }

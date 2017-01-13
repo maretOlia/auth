@@ -1,4 +1,4 @@
-package giraffe.auth;
+package giraffe.auth.config.server;
 
 import giraffe.auth.services.GiraffeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +20,8 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     GiraffeUserDetailsService giraffeUserDetailsService;
 
-   /* @Autowired // temporary
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
-                .and()
-                .withUser("admin").password("password").roles("ADMIN");
-    }*/
-
-
     @Bean
+    @Qualifier("authenticationManagerBean")
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

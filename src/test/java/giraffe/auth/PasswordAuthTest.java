@@ -1,8 +1,14 @@
 package giraffe.auth;
 
+import giraffe.auth.domain.GiraffeAuthority;
+import giraffe.auth.domain.GiraffeEntity;
+import giraffe.auth.domain.User;
+import giraffe.auth.repository.AuthorityRepository;
+import giraffe.auth.repository.UserRepository;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -16,23 +22,25 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Guschcyna Olga
  * @version 1.0.0
  */
-public class PasswordAuthTest extends GiraffeAuthServerApplicationTests implements RestTemplateHolder {
-
-    @Value("http://localhost:${server.port}")
-    String host;
+public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase implements RestTemplateHolder {
 
     @Rule
     public OAuth2ContextSetup context = OAuth2ContextSetup.standard(this);
 
     RestOperations restTemplate = new RestTemplate();
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    AuthorityRepository authorityRepository;
+
 
     @Override
     public RestOperations getRestTemplate() {
@@ -44,8 +52,21 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTests implemen
         this.restTemplate = restTemplate;
     }
 
-    public String getHost() {
-        return host;
+
+    @Before
+    public void createAccount() {
+        User user = new User()
+                .setLogin("testUser")
+                .setPasswordHash("testPassword");
+
+        GiraffeAuthority giraffeAuthority = new GiraffeAuthority();
+        giraffeAuthority.setRole(GiraffeAuthority.Role.USER);
+        authorityRepository.save(giraffeAuthority);
+
+        user.addAuthority(authorityRepository.findByUuidAndStatus(giraffeAuthority.getUuid(), GiraffeEntity.Status.ACTIVE));
+        giraffeAuthority.addUser(user);
+
+        userRepository.save(user);
     }
 
 

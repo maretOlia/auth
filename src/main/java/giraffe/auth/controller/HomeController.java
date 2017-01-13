@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/home")
 public class HomeController {
 
-   /* @Secured("ROLE_USER")
-    @PreAuthorize("#oauth2.hasScope('read')")*/
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     HttpEntity<Resource<String>> home() {
 
