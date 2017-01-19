@@ -6,13 +6,13 @@ import org.springframework.security.oauth2.client.token.grant.password.ResourceO
  * @author Guschcyna Olga
  * @version 1.0.0
  */
-public class ClientContext extends ResourceOwnerPasswordResourceDetails {
+public class ClientContextPasswordGrant extends ResourceOwnerPasswordResourceDetails {
 
-    public ClientContext(Object obj) {
+    public ClientContextPasswordGrant(Object obj) {
         PasswordAuthTest test = (PasswordAuthTest) obj;
         setAccessTokenUri(test.getHost() + "/oauth/token");
         setClientId("trustedClientId");
-        //setScope(asList("read", "write"));
+        setClientSecret("trustedClientSecret");
         setUsername("testUser");
         setPassword("testPassword");
     }

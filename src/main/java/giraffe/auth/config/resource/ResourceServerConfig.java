@@ -25,16 +25,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/console/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/home").access("#oauth2.hasScope('read') and #oauth2.hasScope('write') and hasRole('USER')")
+                .antMatchers(HttpMethod.GET, "/console/*").permitAll() // allow access H2 browser console
+                .antMatchers(HttpMethod.GET, "/home").authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    /** Used access browser H2 db console */
     @Bean
     ServletRegistrationBean h2servletRegistration() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
         registrationBean.addUrlMappings("/console/*"); //default db url: "jdbc:h2:mem:testdb"
         return registrationBean;
     }
+
 }

@@ -3,10 +3,7 @@ package giraffe.auth.domain;
 import com.google.common.collect.Sets;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -18,6 +15,7 @@ import java.util.Set;
 public class GiraffeAuthority extends GiraffeEntity<GiraffeAuthority> implements GrantedAuthority {
 
     @Column(nullable = false)
+    @Enumerated
     private Role role;
 
 
@@ -27,12 +25,6 @@ public class GiraffeAuthority extends GiraffeEntity<GiraffeAuthority> implements
 
     public GiraffeAuthority() {
     }
-
-    @Override
-    public GiraffeAuthority self() {
-        return this;
-    }
-
 
     public enum Role {
         ADMIN("ROLE_ADMIN"), USER("ROLE_USER"), ANONIMOUS("ROLE_ANONYMOUS");
@@ -46,6 +38,11 @@ public class GiraffeAuthority extends GiraffeEntity<GiraffeAuthority> implements
         public String getValue() {
             return value;
         }
+    }
+
+    @Override
+    public GiraffeAuthority self() {
+        return this;
     }
 
 

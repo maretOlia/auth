@@ -17,8 +17,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+
     GiraffeUserDetailsService giraffeUserDetailsService;
+
+
+    @Autowired
+    GiraffeSecurityConfiguration(GiraffeUserDetailsService giraffeUserDetailsService) {
+        this.giraffeUserDetailsService = giraffeUserDetailsService;
+    }
 
     @Bean
     @Qualifier("authenticationManagerBean")

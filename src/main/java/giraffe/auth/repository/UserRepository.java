@@ -14,4 +14,6 @@ public interface UserRepository extends GiraffeRepository<User> {
 
     User findByLoginAndStatus(String login, GiraffeEntity.Status status);
 
+    User findBySocialIdAndSocialProviderAndStatus(String socialId, User.SocialProvider socialProvider, GiraffeEntity.Status status);
+
 }

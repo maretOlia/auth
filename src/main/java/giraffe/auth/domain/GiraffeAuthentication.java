@@ -11,12 +11,12 @@ import java.util.Collection;
  */
 public class GiraffeAuthentication implements Authentication {
 
-    private final GiraffeUserDetails userDetails;
+    private GiraffeUserDetails userDetails;
 
     private boolean authenticated = true;
 
 
-    public GiraffeAuthentication(final GiraffeUserDetails user) {
+    public GiraffeAuthentication(GiraffeUserDetails user) {
         this.userDetails = user;
     }
 

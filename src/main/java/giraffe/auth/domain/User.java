@@ -13,10 +13,9 @@ import java.util.Set;
 @Entity
 public class User extends GiraffeEntity<User> implements Serializable {
 
-    @Column(nullable = false)
     private String login;
 
-    @Column(nullable = false, name = "pass_hash")    //TODO: ignore in JSON
+    @Column(name = "pass_hash")    //TODO: ignore in JSON
     private String passwordHash;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -25,9 +24,51 @@ public class User extends GiraffeEntity<User> implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "authority_uuid", referencedColumnName = "uuid"))
     private Set<GiraffeAuthority> authorities = Sets.newHashSet();
 
+    @Column(name = "user_type", nullable = false)
+    @Enumerated
+    private UserType userType;
 
-    public User() {
+    // Social users
+    @Column(name = "soc_id")
+    private String socialId;
+
+    // Social users
+    @Column(name = "soc_provider")
+    @Enumerated
+    private SocialProvider socialProvider;
+
+
+    public enum UserType {
+        REGISTERED(1), SOCIAL(2);
+
+        private int value;
+
+        UserType(final int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
+
+    public enum SocialProvider {
+        FACEBOOK(1);
+
+        private int value;
+
+        SocialProvider(final int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+
+    public User() { }
+
 
     @Override
     public User self() {
@@ -64,6 +105,33 @@ public class User extends GiraffeEntity<User> implements Serializable {
         return this;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public User setUserType(UserType userType) {
+        this.userType = userType;
+        return this;
+    }
+
+    public String getSocialId() {
+        return socialId;
+    }
+
+    public User setSocialId(String socialId) {
+        this.socialId = socialId;
+        return this;
+    }
+
+    public SocialProvider getSocialProvider() {
+        return socialProvider;
+    }
+
+    public User setSocialProvider(SocialProvider socialProvider) {
+        this.socialProvider = socialProvider;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,16 +140,22 @@ public class User extends GiraffeEntity<User> implements Serializable {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) return false;
-        return passwordHash.equals(user.passwordHash);
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
+        if (userType != user.userType) return false;
+        if (socialId != null ? !socialId.equals(user.socialId) : user.socialId != null) return false;
+        return socialProvider == user.socialProvider;
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + login.hashCode();
-        result = 31 * result + passwordHash.hashCode();
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
+        result = 31 * result + userType.hashCode();
+        result = 31 * result + (socialId != null ? socialId.hashCode() : 0);
+        result = 31 * result + (socialProvider != null ? socialProvider.hashCode() : 0);
         return result;
     }
 }

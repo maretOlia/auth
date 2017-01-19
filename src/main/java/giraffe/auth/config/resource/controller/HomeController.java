@@ -1,4 +1,4 @@
-package giraffe.auth.controller;
+package giraffe.auth.config.resource.controller;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpEntity;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
+
 /**
  * @author Guschcyna Olga
  * @version 1.0.0
@@ -18,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    HttpEntity<Resource<String>> home() {
+    HttpEntity<Resource<Principal>> home(Principal principal) {
 
-        Resource<String> resource = new Resource<>("Welcome to Giraffe Test Resource");
+        Resource<Principal> resource = new Resource<>(principal);
 
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
