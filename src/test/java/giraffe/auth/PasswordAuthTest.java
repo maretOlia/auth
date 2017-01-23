@@ -1,10 +1,10 @@
 package giraffe.auth;
 
-import giraffe.auth.domain.GiraffeAuthority;
-import giraffe.auth.domain.GiraffeEntity;
-import giraffe.auth.domain.User;
-import giraffe.auth.repository.AuthorityRepository;
-import giraffe.auth.repository.UserRepository;
+import giraffe.domain.GiraffeAuthority;
+import giraffe.domain.GiraffeEntity;
+import giraffe.domain.User;
+import giraffe.repository.AuthorityRepository;
+import giraffe.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.test.OAuth2ContextConfiguration;
 import org.springframework.security.oauth2.client.test.OAuth2ContextSetup;
 import org.springframework.security.oauth2.client.test.RestTemplateHolder;
 import org.springframework.security.oauth2.client.token.AccessTokenRequest;
@@ -88,16 +87,12 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
         assertEquals(accessToken.getAdditionalInformation().get("username"), "testUser");
     }
 
-
-
     /**
      * Testing with {@link RestTemplate}
      * */
     @Test
     public void shouldObtainRefreshToken() {
         OAuth2AccessToken accessToken = getAccessToken();
-
-        String oldAccessToken = accessToken.getValue();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -148,18 +143,6 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         getRestTemplate().postForEntity(host + "/oauth/token", request, String.class);
-    }
-
-
-    /**
-     * Testing with predefined client context
-     * */
-    @Test
-    @OAuth2ContextConfiguration(value = ClientContextPasswordGrant.class, initialize = false)
-    public void shouldReceiveProtectedResource() {
-
-        ResponseEntity<String> response = getRestTemplate().getForEntity(host + "/home", String.class);
-        assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 
 }

@@ -1,6 +1,6 @@
 package giraffe.auth.config.server;
 
-import giraffe.auth.services.GiraffeUserDetailsService;
+import giraffe.services.GiraffeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +27,6 @@ import java.util.List;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
 
     private TokenStore tokenStore;
 

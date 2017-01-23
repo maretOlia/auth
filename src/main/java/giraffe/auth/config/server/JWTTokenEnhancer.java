@@ -1,6 +1,6 @@
 package giraffe.auth.config.server;
 
-import giraffe.auth.domain.GiraffeUserDetails;
+import giraffe.domain.GiraffeUserDetails;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;

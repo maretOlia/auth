@@ -4,6 +4,8 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+
+        //maven { url "https://jitpack.io" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -23,17 +25,18 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-hateoas:1.4.3.RELEASE')
-	//compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.security.oauth:spring-security-oauth2:2.0.12.RELEASE')
 	compile('org.springframework.security:spring-security-jwt:1.0.2.RELEASE')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-devtools')
-	compile('com.google.guava:guava:11.0.2')
+
+	// has Spring OAuth2 dependencies
+    compile('com.github.maretOlia:shared:-SNAPSHOT')
 
 	// embedded in-memory SQL db
 	compile('com.h2database:h2')
