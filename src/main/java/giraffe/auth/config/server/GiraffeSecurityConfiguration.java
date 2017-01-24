@@ -9,11 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author Guschcyna Olga
@@ -24,10 +26,13 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private GiraffeUserDetailsService giraffeUserDetailsService;
 
+    private PasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    GiraffeSecurityConfiguration(GiraffeUserDetailsService giraffeUserDetailsService) {
+    GiraffeSecurityConfiguration(GiraffeUserDetailsService giraffeUserDetailsService, PasswordEncoder bCryptPasswordEncoder) {
         this.giraffeUserDetailsService = giraffeUserDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/console").permitAll() // allow access H2 browser console
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -52,7 +57,7 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(giraffeUserDetailsService);
+        auth.authenticationProvider(authProvider());
     }
 
     @Override
@@ -60,6 +65,16 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         return giraffeUserDetailsService;
     }
+
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(giraffeUserDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return authProvider;
+    }
+
 
     @Bean
     ServletRegistrationBean h2servletRegistration() {

@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.test.OAuth2ContextSetup;
@@ -39,7 +40,7 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
     @Rule
     public OAuth2ContextSetup context = OAuth2ContextSetup.standard(this);
 
-    RestOperations restTemplate = new RestTemplate();
+    private RestOperations restTemplate = new RestTemplate();
 
     @Autowired
     UserRepository userRepository;
@@ -47,6 +48,8 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
     @Autowired
     AuthorityRepository authorityRepository;
 
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public RestOperations getRestTemplate() {
@@ -64,7 +67,7 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
         User user = new User()
                 .setLogin("testUser")
                 .setUserType(User.UserType.REGISTERED)
-                .setPasswordHash("testPassword");
+                .setPasswordHash(bCryptPasswordEncoder.encode("testPassword"));
 
         GiraffeAuthority giraffeAuthority = new GiraffeAuthority();
         giraffeAuthority.setRole(GiraffeAuthority.Role.USER);

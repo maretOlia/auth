@@ -4,6 +4,7 @@ import giraffe.services.GiraffeUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -38,14 +39,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private GiraffeUserDetailsService giraffeUserDetailsService;
 
+    private PasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
-    public AuthorizationServerConfig(TokenStore tokenStore, AuthenticationManager authenticationManager, TokenEnhancer tokenEnhancer, JwtAccessTokenConverter jwtAccessTokenConverter, GiraffeUserDetailsService giraffeUserDetailsService) {
+    public AuthorizationServerConfig(TokenStore tokenStore,
+                                     AuthenticationManager authenticationManager,
+                                     TokenEnhancer tokenEnhancer,
+                                     JwtAccessTokenConverter jwtAccessTokenConverter,
+                                     GiraffeUserDetailsService giraffeUserDetailsService,
+                                     PasswordEncoder bCryptPasswordEncoder) {
         this.tokenStore = tokenStore;
         this.authenticationManager = authenticationManager;
         this.tokenEnhancer = tokenEnhancer;
         this.jwtAccessTokenConverter = jwtAccessTokenConverter;
         this.giraffeUserDetailsService = giraffeUserDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -53,7 +62,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         oauthServer
                 .allowFormAuthenticationForClients()
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
+                .passwordEncoder(bCryptPasswordEncoder);
 
     }
 
@@ -82,7 +92,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("trustedClientId")
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token", "facebook_social")
                 .authorities("ROLE_USER", "ROLE_ADMIN")
-                .secret("trustedClientSecret")
+                .secret(bCryptPasswordEncoder.encode("trustedClientSecret"))
                 .scopes("java", "read", "write") // define fixed scopes for client. Client doesn't have to provide scopes with authorization attempt
                 .accessTokenValiditySeconds(3600) // 1 hour
                 .refreshTokenValiditySeconds(604800); // 1 week
