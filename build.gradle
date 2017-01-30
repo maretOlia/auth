@@ -1,42 +1,21 @@
-buildscript {
-	ext {
-		springBootVersion = '1.4.2.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-
-        //maven { url "https://jitpack.io" }
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
-}
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
-
 jar {
-	baseName = 'giraffe.authServer'
+	baseName = 'giraffe.auth'
 	version = '0.0.1-SNAPSHOT'
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
-	mavenCentral()
-
     maven { url "https://jitpack.io" }
 }
 
 dependencies {
+    compile project(':shared')
+
 	compile('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-hateoas:1.4.3.RELEASE')
 	compile('org.springframework.security:spring-security-jwt:1.0.2.RELEASE')
 	compile('org.springframework.boot:spring-boot-devtools')
 
-	// has Spring OAuth2 dependencies
-    compile('com.github.maretOlia:shared:-SNAPSHOT')
+	compile('com.github.maretOlia:shared:-SNAPSHOT')
 
 	// embedded in-memory SQL db
 	compile('com.h2database:h2')
@@ -44,6 +23,3 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.7'
-}

@@ -10,10 +10,10 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 @SpringBootApplication
 @Import(SharedConfigurationReference.class)
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
-public class GiraffeAuthServerApplication {
+public class GiraffeAuthApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GiraffeAuthServerApplication.class, args);
+		SpringApplication.run(GiraffeAuthApplication.class, args);
 	}
 
 }

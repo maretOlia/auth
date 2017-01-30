@@ -48,13 +48,13 @@ public class SocialTokenGranter extends AbstractTokenGranter {
 
             ResponseEntity<FacebookUserInformation> response = new RestTemplate().getForEntity(url, FacebookUserInformation.class);
 
-            if (response.getStatusCode().is4xxClientError()) throw new InvalidOrExpiredSocialToken();
+            if (response.getStatusCode().is4xxClientError()) throw new InvalidOrExpiredSocialTokenException();
 
             FacebookUserInformation userInformation = response.getBody();
             GiraffeUserDetails giraffeSocialUserDetails = giraffeUserDetailsService.loadOrCreateSocialUser(userInformation.getId(), userInformation.getEmail(), User.SocialProvider.FACEBOOK);
 
             userAuth = new UsernamePasswordAuthenticationToken(giraffeSocialUserDetails, "N/A", giraffeSocialUserDetails.getAuthorities());
-        } catch (InvalidOrExpiredSocialToken | GiraffeException.UnableToValidateSocialUserInformation e) {
+        } catch (InvalidOrExpiredSocialTokenException | GiraffeException.UnableToValidateSocialUserInformation e) {
             e.printStackTrace();
             //TODO log the stacktrace
         }
