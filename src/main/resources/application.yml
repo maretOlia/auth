@@ -1,6 +1,6 @@
 server:
  port: 8081
- contextPath: /
+ contextPath: /auth
  error:
   whitelabel:
    enabled: false
