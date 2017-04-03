@@ -3,8 +3,8 @@ package giraffe.auth.config.server;
 import giraffe.domain.GiraffeException;
 
 /**
- * @author Guschcyna Olga
- * @version 1.0.0
+ * @author Olga Gushchyna
+ * @version 0.0.1
  */
 public class InvalidOrExpiredSocialTokenException extends GiraffeException {
 
@@ -16,4 +16,5 @@ public class InvalidOrExpiredSocialTokenException extends GiraffeException {
     public Integer getErrorCode() {
         return 1200;
     }
+
 }

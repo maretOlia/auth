@@ -32,8 +32,8 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
 /**
- * @author Guschcyna Olga
- * @version 1.0.0
+ * @author Olga Gushchyna
+ * @version 0.0.1
  */
 public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase implements RestTemplateHolder {
 
@@ -134,7 +134,7 @@ public class PasswordAuthTest extends GiraffeAuthServerApplicationTestsCase impl
      * Testing with {@link RestTemplate}
      * */
     @Test(expected = HttpClientErrorException.class)
-    public void shouldGrantTokenBasedOnCustomSocialGrant() {
+    public void shouldThrowExceptionOnWrongSocialToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 

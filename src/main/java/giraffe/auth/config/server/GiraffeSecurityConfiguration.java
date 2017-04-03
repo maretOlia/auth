@@ -18,8 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @author Guschcyna Olga
- * @version 1.0.0
+ * @author Olga Gushchyna
+ * @version 0.0.1
  */
 @Configuration
 public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -28,9 +28,8 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private PasswordEncoder bCryptPasswordEncoder;
 
-
     @Autowired
-    GiraffeSecurityConfiguration(GiraffeUserDetailsService giraffeUserDetailsService, PasswordEncoder bCryptPasswordEncoder) {
+    public GiraffeSecurityConfiguration(GiraffeUserDetailsService giraffeUserDetailsService, PasswordEncoder bCryptPasswordEncoder) {
         this.giraffeUserDetailsService = giraffeUserDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -74,7 +73,6 @@ public class GiraffeSecurityConfiguration extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return authProvider;
     }
-
 
     @Bean
     ServletRegistrationBean h2servletRegistration() {

@@ -14,8 +14,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 /**
- * @author Guschcyna Olga
- * @version 1.0.0
+ * @author Olga Gushchyna
+ * @version 0.0.1
  */
 @Configuration
 public class JWTTokenConfig {
@@ -26,8 +26,8 @@ public class JWTTokenConfig {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 
         // read from keystore file
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("testStore.jks"), "mypass".toCharArray());
-        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("giraffeKeyStore.jks"), "giraffe".toCharArray());
+        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("giraffeKeyStore"));
         return converter;
     }
 

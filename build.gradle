@@ -15,7 +15,7 @@ dependencies {
 	compile('org.springframework.security:spring-security-jwt:1.0.2.RELEASE')
 	compile('org.springframework.boot:spring-boot-devtools')
 
-	compile('com.github.maretOlia:shared:-SNAPSHOT')
+//	compile('com.github.maretOlia:shared:-SNAPSHOT')
 
 	// embedded in-memory SQL db
 	compile('com.h2database:h2')

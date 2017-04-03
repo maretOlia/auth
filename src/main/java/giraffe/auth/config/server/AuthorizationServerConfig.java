@@ -22,8 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Guschcyna Olga
- * @version 1.0.0
+ * @author Olga Gushchyna
+ * @version 0.0.1
  */
 @Configuration
 @EnableAuthorizationServer
@@ -40,7 +40,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private GiraffeUserDetailsService giraffeUserDetailsService;
 
     private PasswordEncoder bCryptPasswordEncoder;
-
 
     @Autowired
     public AuthorizationServerConfig(TokenStore tokenStore,
